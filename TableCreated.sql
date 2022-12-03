@@ -5,8 +5,8 @@ create database erol;
 -- CREATE - TABLO OLUŞTURMA
 CREATE TABLE ogrenciler2
 (
-ogrenci_no char(7),
-isim varchar(20),
+ogrenci_no char(7),--Uzunlugunu bildigimiz stringler icin CHAR kullanilir
+isim varchar(20),--uzunlugunu bilmedigimiz stringler icin VARCHAR kullanilirz
 soyisim varchar(25),
 not_ort real,-- Ondalıklı sayılar için kullanılır(Double gibi)
 kayit_tarih date
