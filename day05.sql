@@ -125,5 +125,39 @@ select isim,maas from personel where maas<5000
 union all
 select isim,maas from personel where maas <5000;
 
+/*
+SQL INTERSECT operatörü, 2 veya daha fazla SELECT ifadesinin sonuçlarını döndürmek için kullanılır.
+Ancak, yalnızca tüm sorgular veya veri kümeleri tarafından seçilen satırları döndürür. 
+Bir sorguda bir kayıt varsa ve diğerinde yoksa, INTERSECT sonuçlarından çıkarılacaktır.
+*/
+--Personel tablosundan Istanbul veya Ankara’da calisanlarin id’lerini yazdir
+--Personel_bilgi tablosundan 2 veya 3 cocugu olanlarin id lerini yazdirin
+--Iki sorguyu INTERSECT ile birlestirin
+
+select id from personel where sehir in ('Istanbul','Ankara')
+intersect
+select id from personel_bilgi where cocuk_sayisi in(2,3)
+
+select * from personel
+-- Honda,Ford ve Tofas’ta calisan ortak isimde personel varsa listeleyin
+
+select isim from personel where sirket='Honda'
+intersect
+select isim from personel where sirket='Ford'
+intersect
+select isim from personel where sirket='Tofas'
+
+--5000’den az maas alip Honda’da calismayanlari yazdirin
+select isim,sirket from personel where maas<5000
+except
+select isim,sirket from personel where sirket='Honda'
+select * from personel
+
+
+
+
+
+
+
 
 
