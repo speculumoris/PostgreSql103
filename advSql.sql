@@ -383,7 +383,67 @@ for target in query loop
 end loop [ label ];
 
 -- Task : Filmleri süresine göre sıraladığımızda en uzun 2 filmi gösterelim
+do $$
 
+declare
+	f record;
+begin
+	for f in select title,length
+			 from film
+			 order by length desc
+			 limit 2
+	loop 
+		raise notice '% ( % dakika )',f.title,f.length;
+	end loop;
+end $$;
+
+-- ***************** EXIT *****************
+
+exit when counter > 10;
+
+-- yukardaki ile aşağıdaki aynı işi yapıyor, üst tarafdaki daha kullanışlı
+
+if counter >10 then 
+	exit;
+end if;
+
+-- Örnek 
+
+do $$ 
+begin
+	<<inner_block>>
+	begin
+		exit inner_block;
+		raise notice 'inner block dan merhaba';
+	
+	end ;
+
+	raise notice 'outer block dan Merhaba';
+end $$;
+
+
+-- ************ CONTINUE ******************
+
+-- mevcut iterasyonu atlamak için kullanılır
+-- Syntax : 
+
+continue [loop_label] [when condition] -- [] bu kısımlar opsiyoneldir
+ 
+-- Örnek : 
+
+do $$ 
+
+declare
+	counter integer :=0;  -- counter isimli değişken oluşturup default degerini girdim
+
+begin
+	loop
+		counter := counter +1; -- loop içinde counter değerim 1 artırılıyor
+		exit when counter >10; -- counter değerim 10 dan büyük olursa loop dan çık
+		continue when mod(counter,2)=0; -- counter çift ise bu iterasyonu terk et
+		raise notice '%', counter; -- counter değerimi ekrana basıyorum
+	end loop;
+end $$;
 
 
 
