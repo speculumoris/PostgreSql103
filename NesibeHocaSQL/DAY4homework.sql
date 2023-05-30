@@ -43,12 +43,21 @@ INSERT INTO bolumler VALUES(5005, 'Edebiyat', 420,'Kuzey');
 -----------------------------------------------------------------------------
 --Q1)Puanı, taban puanı en yüksek olan bölümün puanından yüksek olan öğrencilerin isim ve sehirlerini 
 --listeleyiniz.
+Select isim,sehir from öğrenciler where puan > (select max(taban_puanı) from bolumler  )
+
 --Q2)Taban puanı 460 dan az olan bölümlerdeki öğrencilerin isimlerini 
 --ve bölümlerini listeleyiniz.
+select isim,bolum from öğrenciler where bolum in (select bolum from bolumler where taban_puanı<460);
 --Q3)İstanbulda yaşayan öğrencilerin bölümlerini ve 
 --taban puanlarını listeleyiniz.
+select bolum,taban_puanı from bolumler where bolum in (select bolum from ogrenciler where sehir='Istanbul')
 --Q4)Bölüm isimlerini, kampüslerini ve 
 --her bölümde okuyan öğrencilerin en yüksek puanlarını listeleyiniz.
+
+select bolum,kampus,
+(Select max(puan) from ogrenciler o where o.bolum=b.bolum) 
+from bolumler b
+
 
 ÖDEVVVV-3:
 ---------------------------------------------------------------------------------
@@ -97,5 +106,12 @@ INSERT INTO siparisler VALUES(3013,107, 'defter',145);
 ------------------------------------------------------------------------
 
 --Q1)Siparişlerde defter varsa müşterilerin isim ve şehirlerini listeleyiniz.
+SElect isim,sehir from musteriler where  exists in( Select * from siparisler where urun_adi='defter')
 --Q2)Siparişi olan müşterileri listeleyiniz.
+select * from musteriler where id  in (select musteri_id from siparisler)
 --Q3)Müşterilerden yaşı 18 den küçük varsa siparişini sil.
+delete from siparisler 
+where musteri_id exists ( select id from musteriler where yas<18)
+
+delete from siparisler 
+where  exists ( select from musteriler m where yas<18 and m.id=s.musteri_id);
